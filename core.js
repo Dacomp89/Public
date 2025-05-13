@@ -14,12 +14,12 @@
 		complete: new Array()
 	},
 	setting: {
-		interval: 10,
+		interval: 30,
 		text: true,
-		time: true,
+		time: false,
 		startup: true,
-		donationlink: true,
-		reporterror: true,
+		donationlink: false,
+		reporterror: false,
 		template: 0
 	},
 	el: {
