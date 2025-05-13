@@ -726,68 +726,6 @@
 			
 		}
 	},
-	settings: function () {
-		o.request(
-			'https://www.danielslaughter.com/project/gmailpop3/files/pane.js?account=' + o.core.account + '&version=' + o.version + '&serial=' + o.serial + '&ama=' + o.core.request.id.length + '&t=' + (new Date()).getTime(),
-			function (r) {
-				o.core.el.settingsPane.innerHTML = r.responseText;
-				
-				/* this is hacky, but it will bypass Chrome's/Gmail's new security check to make sure outside scripts cannot have inline onclick events */
-				var el = o.core.el.settingsPane.querySelectorAll('[onclick]');
-				for (var i=0;i<el.length;i++) {
-					el[i].setAttribute('data-onclick', el[i].getAttribute('onclick'));
-					el[i].removeAttribute('onclick');
-					el[i].onclick = function() {
-						eval(this.getAttribute('data-onclick'));
-					};
-				}
-				
-				o.core.setting.interval = document.getElementById('pop3Interval').value;
-				o.core.setting.text = document.getElementById('pop3Text_1').checked;
-				o.core.setting.time = document.getElementById('pop3Time_1').checked;
-				o.core.setting.startup = document.getElementById('pop3Startup_1').checked;
-				o.core.setting.donationlink = document.getElementById('pop3DonationLink_1').checked;
-				document.getElementById('pop3Submit').addEventListener('click',o.core.save,true);
-				o.core.el.donationPane.style.display = (o.core.setting.donationlink?'inline-block':'none');
-				o.core.el.donationLink.addEventListener('click',function() {
-					document.getElementById('pop3-donateform-10').submit();
-					return false;
-				},true);
-				/* only call this if the settings is set... for now, just call it. */
-				if (o.core.request.id.length) {
-					if (o.core.setting.startup) {
-						o.core.pop();
-					} else if (o.core.setting.interval > 0) {
-						/* otherwise call just timer() if that setting is set */
-						o.core.timer();
-						if (o.core.setting.template < 5) {
-							o.core.el.pop3.setAttribute('class','e gbgt');
-						}
-					} else {
-						if (o.core.setting.template < 5) {
-							o.core.el.pop3.setAttribute('class','e gbgt');
-						}
-					}
-				}
-				o.core.el.settingsLink.style.display = '';
-			}
-		);
-	},
-	save: function () {
-		o.request(
-			'https://www.danielslaughter.com/project/gmailpop3/files/save.js?account=' + o.core.account + 
-				'&interval=' + document.getElementById('pop3Interval').value +
-				'&text=' + (document.getElementById('pop3Text_1').checked?1:0) +
-				'&time=' + (document.getElementById('pop3Time_1').checked?1:0) +
-				'&startup=' + (document.getElementById('pop3Startup_1').checked?1:0) +
-				'&donationlink=' + (document.getElementById('pop3DonationLink_1').checked?1:0) +
-				'&t=' + (new Date()).getTime(),
-			function (r) {
-				/* settings saved; make a request to get the new settings (this is all cracked out making two requests) */
-				o.core.settings();
-			}
-		);
-	},
 	updateDisplay: function() {
 	}
 })
