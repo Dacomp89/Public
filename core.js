@@ -534,7 +534,7 @@
 				if (o.core.setting.template < 5) {
 					o.core.el.pop3.setAttribute('class','');
 				}
-				o.core.el.pop3.appendChild(document.createTextNode('Settings...'));
+				o.core.el.pop3.appendChild(document.createTextNode('POP3'));
 				o.core.checking = false;
 			}
 			o.core.updateDisplay();
